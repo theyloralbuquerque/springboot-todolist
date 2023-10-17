@@ -10,6 +10,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
 @Entity(name = "tb_tasks")
@@ -22,7 +24,7 @@ public class TaskModel {
 	
 	@Column(length = 50)
 	private String title;
-	private LocalDateTime starAt;
+	private LocalDateTime dataInicial;
 	private LocalDateTime endAt;
 	private String priority;
 	
@@ -30,5 +32,8 @@ public class TaskModel {
 	
 	@CreationTimestamp
 	private LocalDateTime createdAt;
+	
+	
+	
 	
 }
