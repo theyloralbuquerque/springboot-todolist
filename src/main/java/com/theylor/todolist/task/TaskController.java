@@ -59,13 +59,28 @@ public class TaskController {
 	}
 	
 	@PutMapping("/{id}")
-	public TaskModel update(@RequestBody TaskModel taskModel, HttpServletRequest request, @PathVariable UUID id) {
-		var idUser = request.getAttribute("idUser");
-		
+	public ResponseEntity update(@RequestBody TaskModel taskModel, HttpServletRequest request, @PathVariable UUID id) {
+		// Pesquisa um id no banco armazena em task.
 		var task = this.taskRepository.findById(id).orElse(null);
 		
+		if (task == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body("Tarefa não encontrada");
+		}
+		
+		// Pega o valor do atributo idUser da requisição e armazena em idUser.  
+		var idUser = request.getAttribute("idUser");
+		
+		// Se o id do usuario da task no banco não for igual ao id do usuario da task da requsição.
+		if (!task.getIdUser().equals(idUser)) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body("Usuário não tem permissão para alterar essa tarefa");
+		}
+		
 		Utils.copyNonNullProperties(taskModel, task);
+		
+		var taskUpdated = this.taskRepository.save(task);
 
-		return this.taskRepository.save(task);
+		return ResponseEntity.ok().body(taskUpdated);
 	}
 }

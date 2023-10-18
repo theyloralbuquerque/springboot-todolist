@@ -10,8 +10,7 @@ import org.springframework.beans.BeanWrapperImpl;
 
 public class Utils {
 	
-	public static void copyNonNullProperties(Object source, Object target) {
-		
+	public static void copyNonNullProperties(Object source, Object target) {	
 		// Copia os objetos do source e armazena no target e evitando copiar objetos null (getNullPropertyNames(source)).
 		BeanUtils.copyProperties(source, target, getNullPropertyNames(source));
 	}
